@@ -1,9 +1,8 @@
 #include<iostream>
 #include "Headers.h"
 
-void showMenu()
+void ShowMenu()
 {
-	std::cout << std::endl;
 	std::cout << "0: Exit " << std::endl;
 	std::cout << "1: Print help " << std::endl;
 	std::cout << "2: Print exchange stats " << std::endl;
@@ -13,6 +12,42 @@ void showMenu()
 	std::cout << "6: Continue (next timestamp) " << std::endl;
 	std::cout << "===========================" << std::endl;
 	std::cout << "Type in 1-6" << std::endl;
+}
+
+void ProcessUserOption(int option)
+{
+	switch (option)
+	{
+	case 1:
+		PrintHelp();
+		break;
+	case 2:
+		PrintStats();
+		break;
+	case 3:
+		PlaceAsk();
+		break;
+	case 4:
+		PlaceBid();
+		break;
+	case 5:
+		PrintWallet();
+		break;
+	case 6:
+		NextTimeStamp();
+		break;
+	default:
+		std::cout << "Invalid input" << std::endl;
+		break;
+	}
+}
+
+int GetUserOption()
+{
+	int a;
+	std::cout << "Enter an option: " << std::endl;
+	std::cin >> a;
+	return a;
 }
 
 void PrintHelp()
