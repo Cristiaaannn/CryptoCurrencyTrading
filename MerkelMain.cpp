@@ -1,10 +1,13 @@
 #include<iostream>
+#include<iomanip>
+#include<fstream>
+#include <regex>
 #include "MerkelMain.h"
 
 void MerkelMain::init()
 {
 
-	/*LoadOrderBook();
+	LoadOrderBook();
 	while (true)
 	{
 		ShowMenu();
@@ -15,12 +18,67 @@ void MerkelMain::init()
 			break;
 		}
 		ProcessUserOption(userOption);
-	}*/
+	}
 }
 
 void MerkelMain::LoadOrderBook()
 {
+	int lineNumber{ 0 };
+	std::ifstream csvFile{ "Data.csv" };
+	std::string line;
+	std::vector<std::string> tokens;
+	if (csvFile.is_open())
+	{
+		std::cout << "File opened" << std::endl;
+		while (std::getline(csvFile, line))
+		{
+			++lineNumber;
+			tokens = Tokenise(line, ',');
+			if (tokens.size() != 5)
+			{
+				if (line.length() == 0)
+				{
+					std::cout << "Empty line detected  - " << lineNumber << std::endl;
+					continue;
+				}
+				else
+				{
+					std::cout << "Bad line - " << lineNumber << std::endl;
+					continue;
+				}
+			}
 
+			try {
+				std::regex r("[^0-9.]+");
+				if (std::regex_search(tokens[3], r) || std::regex_search(tokens[4], r)) {
+					throw std::invalid_argument(""); // Non-numeric character found
+				}
+				double price = std::stod(tokens[3]);
+				double amount = std::stod(tokens[4]);
+				OrderBookType type;
+				if (tokens.at(2) == "Bid")
+				{
+					type = OrderBookType::bid;
+				}
+				else
+				{
+					type = OrderBookType::ask;
+				}
+				OrderBookEntry newOrder{ price,amount,tokens.at(0),tokens.at(1), type };
+				orders.push_back(newOrder);
+			}
+			catch (std::exception& e)
+			{
+				std::cout << "Bad float! " << lineNumber << std::endl;
+				break;
+			}
+		}
+		csvFile.close();
+	}
+	else
+	{
+		std::cout << "File not opened" << std::endl;
+	}
 }
 
 std::vector<std::string> MerkelMain::Tokenise(std::string csvLine, char separator)
@@ -97,6 +155,10 @@ void MerkelMain::PrintHelp()
 void MerkelMain::PrintStats()
 {
 	std::cout << "Orderbook contains: " << orders.size() << " entries." << std::endl;
+	std::cout << "The highest price is: " << std::fixed << std::setprecision(8) << ComputeHighPrice(orders) << std::endl;
+	std::cout << "The lowest price is: " << ComputeLowPrice(orders) << std::endl;
+	std::cout << "The average price is: " << std::fixed << std::setprecision(2) <<ComputeAveragePrice(orders) << std::endl;
+	std::cout << "The price spread is: " << ComputePriceSpread(orders) << std::endl;
 }
 
 void MerkelMain::PlaceAsk()
@@ -121,7 +183,7 @@ void MerkelMain::NextTimeStamp()
 
 double MerkelMain::ComputeAveragePrice(std::vector<OrderBookEntry>& entries)
 {
-	double sum{ 0 };
+	double sum = 0.0;
 	for (OrderBookEntry& entry : entries)
 	{
 		sum += entry.price;
@@ -142,7 +204,7 @@ double MerkelMain::ComputeLowPrice(std::vector<OrderBookEntry>& entries)
 
 double MerkelMain::ComputeHighPrice(std::vector<OrderBookEntry>& entries)
 {
-	double highestValue{ 0 };
+	double highestValue = 0.0;
 	for (OrderBookEntry& entry : entries)
 	{
 		if (entry.price > highestValue)
