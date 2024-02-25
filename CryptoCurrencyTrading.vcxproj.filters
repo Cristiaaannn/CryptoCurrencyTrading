@@ -18,7 +18,7 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Functions.cpp">
+    <ClCompile Include="MerkelMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OrderBookType.cpp">
@@ -29,7 +29,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Headers.h">
+    <ClInclude Include="MerkelMain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="OrderBookType.h">

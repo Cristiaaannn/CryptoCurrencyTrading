@@ -1,21 +1,12 @@
 #include<iostream>
 #include<string>
 #include<vector>
-#include "Headers.h"
+#include "MerkelMain.h"
 #include "OrderBookEntry.h"
 
 int main()
 {
-	while (true)
-	{
-		ShowMenu();
-		int userOption = GetUserOption();
-		if (userOption == 0)
-		{
-			std::cout << "Bye" << std::endl;
-			break;
-		}
-		ProcessUserOption(userOption);
-	}
+	MerkelMain app;
+	app.init();
 	return 0;
 }

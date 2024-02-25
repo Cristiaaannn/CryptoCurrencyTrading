@@ -1,7 +1,31 @@
 #include<iostream>
-#include "Headers.h"
+#include "MerkelMain.h"
 
-void ShowMenu()
+void MerkelMain::init()
+{
+	LoadOrderBook();
+	while (true)
+	{
+		ShowMenu();
+		int userOption = GetUserOption();
+		if (userOption == 0)
+		{
+			std::cout << "Bye" << std::endl;
+			break;
+		}
+		ProcessUserOption(userOption);
+	}
+}
+
+void MerkelMain::LoadOrderBook()
+{
+	OrderBookEntry order1{ 1000 , 0.02 , "2020/03/17 17:01:24.884492", "BTC/USDT", OrderBookType::bid };
+	OrderBookEntry order2{ 2000 , 0.02 , "2020/03/17 17:01:24.884492", "BTC/USDT", OrderBookType::bid };
+	orders.push_back(order1);
+	orders.push_back(order2);
+}
+
+void MerkelMain::ShowMenu()
 {
 	std::cout << "0: Exit " << std::endl;
 	std::cout << "1: Print help " << std::endl;
@@ -14,7 +38,7 @@ void ShowMenu()
 	std::cout << "Type in 1-6" << std::endl;
 }
 
-void ProcessUserOption(int option)
+void MerkelMain::ProcessUserOption(int option)
 {
 	switch (option)
 	{
@@ -42,7 +66,7 @@ void ProcessUserOption(int option)
 	}
 }
 
-int GetUserOption()
+int MerkelMain::GetUserOption()
 {
 	int a;
 	std::cout << "Enter an option: " << std::endl;
@@ -50,37 +74,37 @@ int GetUserOption()
 	return a;
 }
 
-void PrintHelp()
+void MerkelMain::PrintHelp()
 {
 	std::cout << "Help - your aim is to make money. Analyse the market and make bids and offers" << std::endl;
 }
 
-void PrintStats()
+void MerkelMain::PrintStats()
 {
-	std::cout << "Market looks good" << std::endl;
+	std::cout << "Orderbook contains: " << orders.size() << " entries." << std::endl;
 }
 
-void PlaceAsk()
+void MerkelMain::PlaceAsk()
 {
 	std::cout << "Make an offer" << std::endl;
 }
 
-void PlaceBid()
+void MerkelMain::PlaceBid()
 {
 	std::cout << "Make a bid - enter the amount" << std::endl;
 }
 
-void PrintWallet()
+void MerkelMain::PrintWallet()
 {
 	std::cout << "Your wallet is empty" << std::endl;
 }
 
-void NextTimeStamp()
+void MerkelMain::NextTimeStamp()
 {
 	std::cout << "Going to the next transaction" << std::endl;
 }
 
-double ComputeAveragePrice(std::vector<OrderBookEntry>& entries)
+double MerkelMain::ComputeAveragePrice(std::vector<OrderBookEntry>& entries)
 {
 	double sum{ 0 };
 	for (OrderBookEntry& entry : entries)
@@ -90,7 +114,7 @@ double ComputeAveragePrice(std::vector<OrderBookEntry>& entries)
 	return sum / (double)entries.size();
 }
 
-double ComputeLowPrice(std::vector<OrderBookEntry>& entries)
+double MerkelMain::ComputeLowPrice(std::vector<OrderBookEntry>& entries)
 {
 	double lowestValue{ DBL_MAX };
 	for (OrderBookEntry& entry : entries)
@@ -101,7 +125,7 @@ double ComputeLowPrice(std::vector<OrderBookEntry>& entries)
 	return lowestValue;
 }
 
-double ComputeHighPrice(std::vector<OrderBookEntry>& entries)
+double MerkelMain::ComputeHighPrice(std::vector<OrderBookEntry>& entries)
 {
 	double highestValue{ 0 };
 	for (OrderBookEntry& entry : entries)
@@ -112,12 +136,12 @@ double ComputeHighPrice(std::vector<OrderBookEntry>& entries)
 	return highestValue;
 }
 
-double ComputePriceSpread(std::vector<OrderBookEntry>& entries)
+double MerkelMain::ComputePriceSpread(std::vector<OrderBookEntry>& entries)
 {
 	return ComputeHighPrice(entries) - ComputeLowPrice(entries);
 }
 
-std::string GetOrderType(OrderBookEntry& entry)
+std::string MerkelMain::GetOrderType(OrderBookEntry& entry)
 {
 	switch (entry.orderType)
 	{
