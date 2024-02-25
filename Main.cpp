@@ -1,5 +1,8 @@
 #include<iostream>
+#include<string>
+#include<vector>
 #include "Headers.h"
+#include "OrderBookEntry.h"
 
 int main()
 {

@@ -79,3 +79,53 @@ void NextTimeStamp()
 {
 	std::cout << "Going to the next transaction" << std::endl;
 }
+
+double ComputeAveragePrice(std::vector<OrderBookEntry>& entries)
+{
+	double sum{ 0 };
+	for (OrderBookEntry& entry : entries)
+	{
+		sum += entry.price;
+	}
+	return sum / (double)entries.size();
+}
+
+double ComputeLowPrice(std::vector<OrderBookEntry>& entries)
+{
+	double lowestValue{ DBL_MAX };
+	for (OrderBookEntry& entry : entries)
+	{
+		if (entry.price < lowestValue)
+			lowestValue = entry.price;
+	}
+	return lowestValue;
+}
+
+double ComputeHighPrice(std::vector<OrderBookEntry>& entries)
+{
+	double highestValue{ 0 };
+	for (OrderBookEntry& entry : entries)
+	{
+		if (entry.price > highestValue)
+			highestValue = entry.price;
+	}
+	return highestValue;
+}
+
+double ComputePriceSpread(std::vector<OrderBookEntry>& entries)
+{
+	return ComputeHighPrice(entries) - ComputeLowPrice(entries);
+}
+
+std::string GetOrderType(OrderBookEntry& entry)
+{
+	switch (entry.orderType)
+	{
+	case OrderBookType::bid:
+		return "bid";
+	case OrderBookType::ask:
+		return "ask";
+	default:
+		break;
+	}
+}

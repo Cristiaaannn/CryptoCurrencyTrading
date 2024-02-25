@@ -1,3 +1,7 @@
+#include <vector>
+#include "OrderBookEntry.h"
+
+
 /// <summary>
 /// Processes the user option
 /// </summary>
@@ -44,3 +48,38 @@ void PrintWallet();
 /// Next TimeStamp
 /// </summary>
 void NextTimeStamp();
+
+/// <summary>
+/// Computes the average price of the objects contained by the vector
+/// </summary>
+/// <param name="entries">Reference to the vector containing the objects</param>
+/// <returns>(double) The average price</returns>
+double ComputeAveragePrice(std::vector<OrderBookEntry>& entries);
+
+/// <summary>
+/// Computes the lowest price of the objects contained by the vector
+/// </summary>
+/// <param name="entries">Reference to the vector containing the objects</param>
+/// <returns>(double) The lowest price</returns>
+double ComputeLowPrice(std::vector<OrderBookEntry>& entries);
+
+/// <summary>
+/// Computes the highest price of the objects contained by the vector
+/// </summary>
+/// <param name="entries">Reference to the vector containing the objects</param>
+/// <returns>(double) The highest price</returns>
+double ComputeHighPrice(std::vector<OrderBookEntry>& entries);
+
+/// <summary>
+/// Computes the price spread of the objects contained by the vector
+/// </summary>
+/// <param name="entries">Reference to the vector containing the objects</param>
+/// <returns>(double) The price spread</returns>
+double ComputePriceSpread(std::vector<OrderBookEntry>& entries);
+
+/// <summary>
+/// Printable format of order type
+/// </summary>
+/// <param name="entry"></param>
+/// <returns>string of the order type</returns>
+std::string GetOrderType(OrderBookEntry& entry);
