@@ -17,6 +17,14 @@ private:
 	std::vector<OrderBookEntry> orders;
 
 	/// <summary>
+	/// Tokenises a source
+	/// </summary>
+	/// <param name="csvLine">string to be tokenised</param>
+	/// <param name="separator">token separator</param>
+	/// <returns>vector of tokens</returns>
+	std::vector<std::string> Tokenise(std::string csvLine, char separator);
+
+	/// <summary>
 	/// Loads the Order Book data
 	/// </summary>
 	void LoadOrderBook();
